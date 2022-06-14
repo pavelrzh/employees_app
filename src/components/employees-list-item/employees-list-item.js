@@ -1,17 +1,32 @@
+import { Component } from 'react';
 import './employees-list-item.css'
 
-const EmployeesListItem = (props) => {
-
-
-    const {name, salary, onDelete, onToggleProp, increase, rise} = props;
-
-    let classNames ='list-group-item d-flex justify-content-between';
-    if (increase) {
-        classNames += ' increase';
+class EmployeesListItem extends Component {
+    constructor(props) {
+        super(props); 
+        this.state = {
+            salary: ''
+        }
     }
-    if (rise) {
-        classNames += ' like'
+    onChangeSalary = (e) => {
+        const newSalary = e.target.value.slice(0, -1);
+        this.setState(({salary}) => ({
+            salary: newSalary
+        }))
+        this.props.onChangeSalary(this.props.name, newSalary)
     }
+
+    render() {
+
+        const {name, salary, onDelete, onToggleProp, increase, rise} = this.props;
+
+        let classNames ='list-group-item d-flex justify-content-between';
+        if (increase) {
+            classNames += ' increase';
+        }
+        if (rise) {
+            classNames += ' like'
+        }
 
 
     return (  
@@ -20,7 +35,11 @@ const EmployeesListItem = (props) => {
                 onClick={onToggleProp}
                 data-toggle='rise'
                 className='list-group-item-label'>{name}</span>
-            <input type="text" className="list-group-item-input" defaultValue={salary + '$'}/>
+            <input 
+                type="text" 
+                className="list-group-item-input" 
+                defaultValue={salary + '$'}
+                onChange={this.onChangeSalary}/>
             <div className='d-flex justify-content-center align-items-center'>
                 <button type="button"
                     onClick={onToggleProp}
@@ -38,6 +57,9 @@ const EmployeesListItem = (props) => {
             </div>
         </li>
     );
+
+    }
+    
 }
 
     
